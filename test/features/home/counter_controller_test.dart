@@ -1,20 +1,12 @@
-import 'package:flutter_boilerplate/core/analytics/analytics_events.dart'; // slim:analytics
-import 'package:flutter_boilerplate/core/analytics/analytics_service.dart'; // slim:analytics
 import 'package:flutter_boilerplate/features/home/counter_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../helpers/fakes.dart';
-
 void main() {
-  late FakeAnalyticsProvider analytics; // slim:analytics
   late CounterController controller;
   late int notifications;
 
   setUp(() {
-    analytics = FakeAnalyticsProvider(); // slim:analytics
-    controller = CounterController(
-      AnalyticsService([analytics]), // slim:analytics
-    );
+    controller = CounterController();
     notifications = 0;
     controller.addListener(() => notifications++);
   });
@@ -33,17 +25,6 @@ void main() {
     expect(controller.count, 2);
     expect(notifications, 2);
   });
-
-  // slim:analytics:start
-  test('increment tracks the new count', () async {
-    controller.increment();
-    await pumpEventQueue();
-
-    final (name, parameters) = analytics.events.single;
-    expect(name, AnalyticsEvents.counterIncremented);
-    expect(parameters, {AnalyticsParams.count: 1});
-  });
-  // slim:analytics:end
 
   test('reset goes back to zero and notifies', () {
     controller

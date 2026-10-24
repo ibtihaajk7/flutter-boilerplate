@@ -38,32 +38,4 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reset => 'Réinitialiser';
-
-  @override
-  String get notificationsTitle => 'Notifications';
-
-  @override
-  String get notificationsBody =>
-      'Les notifications locales fonctionnent tout de suite, sans serveur. L\'autorisation n\'est demandée que quand tu appuies.';
-
-  @override
-  String get sendTestNotification => 'Envoyer une notification de test';
-
-  @override
-  String get testNotificationTitle => 'Ça marche !';
-
-  @override
-  String get testNotificationBody =>
-      'Cette notification vient de ta nouvelle app.';
-
-  @override
-  String get notificationsDenied =>
-      'Les notifications sont désactivées. Tu peux les activer dans les Réglages.';
-
-  @override
-  String get notificationChannelName => 'Général';
-
-  @override
-  String get notificationChannelDescription =>
-      'Notifications générales de l\'app.';
 }

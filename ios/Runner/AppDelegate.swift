@@ -7,10 +7,6 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // slim:notifications:start
-    // Lets local notifications show while the app is in the foreground.
-    UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
-    // slim:notifications:end
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

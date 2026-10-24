@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_route_observer.dart'; // slim:analytics
-import 'package:flutter_boilerplate/core/analytics/analytics_service.dart'; // slim:analytics
 import 'package:flutter_boilerplate/core/l10n/l10n.dart';
 import 'package:flutter_boilerplate/core/scale/app_scale.dart';
 import 'package:flutter_boilerplate/core/theme/app_theme.dart';
 import 'package:flutter_boilerplate/features/home/home_page.dart';
 import 'package:flutter_boilerplate/l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
 /// Largest system text scale the layouts are designed to absorb.
 ///
@@ -26,12 +23,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  // slim:analytics:start
-  late final AnalyticsRouteObserver _routeObserver = AnalyticsRouteObserver(
-    context.read<AnalyticsService>(),
-  );
-  // slim:analytics:end
-
   @override
   Widget build(BuildContext context) {
     // Must run before the theme is built: theme text sizes come from
@@ -41,9 +32,6 @@ class _AppState extends State<App> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => context.l10n.appTitle,
-      navigatorObservers: [
-        _routeObserver, // slim:analytics
-      ],
       locale: widget.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

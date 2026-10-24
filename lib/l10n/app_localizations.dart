@@ -139,54 +139,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset'**
   String get reset;
-
-  /// No description provided for @notificationsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get notificationsTitle;
-
-  /// No description provided for @notificationsBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Local notifications work out of the box, no server needed. Permission is asked only when you tap.'**
-  String get notificationsBody;
-
-  /// No description provided for @sendTestNotification.
-  ///
-  /// In en, this message translates to:
-  /// **'Send a test notification'**
-  String get sendTestNotification;
-
-  /// No description provided for @testNotificationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'It works!'**
-  String get testNotificationTitle;
-
-  /// No description provided for @testNotificationBody.
-  ///
-  /// In en, this message translates to:
-  /// **'This notification came from your new app.'**
-  String get testNotificationBody;
-
-  /// No description provided for @notificationsDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications are off. You can turn them on in Settings.'**
-  String get notificationsDenied;
-
-  /// No description provided for @notificationChannelName.
-  ///
-  /// In en, this message translates to:
-  /// **'General'**
-  String get notificationChannelName;
-
-  /// No description provided for @notificationChannelDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'General notifications from the app.'**
-  String get notificationChannelDescription;
 }
 
 class _AppLocalizationsDelegate

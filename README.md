@@ -25,9 +25,6 @@ live on the [App Store](https://apps.apple.com/app/id6762184175) and
 | Responsive sizing | None | [SafeScale](#safescale) with tuned clamps for small phones, budget phones and tablets |
 | Layouts | Phone only | Phone/tablet layouts, text scale clamped, overflow tests at 320 px and 2× text |
 | Localization | None | ARB setup plus a checker for missing keys, lost placeholders and duplicate copy |
-| Analytics | None | Vendor-neutral service, typed events, automatic screen views | <!-- slim:analytics -->
-| Crash reporting | None | Error handlers wired to a swappable reporter | <!-- slim:crash -->
-| Notifications | None | Working local notifications, permission asked in context | <!-- slim:notifications -->
 | Firebase, Mixpanel, FCM | None | [Tested recipes](docs/recipes/README.md), one file each |
 | CI/CD | None | PR checks + Android build; tag to get an AAB and iOS build |
 | Team and AI rules | None | [AGENTS.md](AGENTS.md): layout, testing, analytics and l10n rules |
@@ -135,18 +132,6 @@ Vendor-neutral services in `lib/core/` that print to the console until you
 plug a vendor in. [Recipes](docs/recipes/README.md) add Firebase, Mixpanel
 and FCM, each one file plus its tests.
 
-<!-- slim:analytics:start -->
-- **Analytics**: `AnalyticsService` fans out to every provider, survives a
-  failing one, validates event names, and logs screen views for named routes.
-
-  ```dart
-  context.read<AnalyticsService>().track(AnalyticsEvents.buttonTap, {
-    AnalyticsParams.buttonName: 'subscribe',
-  });
-  ```
-<!-- slim:analytics:end -->
-- **Crash reporting**: uncaught Flutter and async errors already reach `CrashReporter`. <!-- slim:crash -->
-- **Local notifications**: shown now or daily at a set time, with permission asked only when the user opts in. <!-- slim:notifications -->
 
 ### Slim down
 
