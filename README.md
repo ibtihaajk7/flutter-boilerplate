@@ -74,20 +74,23 @@ make setup
 make run
 ```
 
-`make setup` creates `.env` from `.env.example`, gets packages and generates
-localizations.
+`make setup` creates `.env` from `.env.example` and gets packages. No `make`?
+Run `cp .env.example .env`, `flutter pub get` and `flutter run`.
 
 ## Commands
 
-| Command | What it does |
-|---|---|
-| `make check` | Everything CI runs: format, analyze, l10n check, tests and coverage gate |
-| `make test` | Run all tests |
-| `make coverage` | Tests plus the coverage gate |
-| `make format` / `make fix` | Format code / apply `dart fix`, then format |
-| `make l10n` | Regenerate localizations after editing `.arb` files |
-| `make hooks` | Run `make check` before every `git push` |
-| `make help` | List every command |
+`make` is optional: each target wraps a regular Flutter or Dart command.
+
+| `make` | Plain command | What it does |
+|---|---|---|
+| `make check` | [5 steps](docs/commands.md#before-you-push) | Everything CI runs |
+| `make test` | `flutter test` | Run all tests |
+| `make analyze` | `flutter analyze --fatal-infos --fatal-warnings` | Strict analysis |
+| `make format` | `dart format lib test tool` | Format code |
+| `make l10n` | `flutter gen-l10n` | Regenerate localizations |
+| `make hooks` | | Run `make check` before every `git push` |
+
+All commands and what each check enforces: [docs/commands.md](docs/commands.md).
 
 ## Project structure
 
