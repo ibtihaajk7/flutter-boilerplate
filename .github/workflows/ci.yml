@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Single source of truth for the Flutter version used in CI and releases.
+  FLUTTER_VERSION: "3.44.1"
+
+jobs:
+  check:
+    name: Format, analyze, l10n, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      # Uncomment if you depend on private git packages (add a GH_PAT secret).
+      # - name: Configure Git for private packages
+      #   run: git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Create .env
+        run: cp .env.example .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generated l10n is up to date
+        run: |
+          flutter gen-l10n
+          git diff --exit-code -- lib/l10n
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test tool
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: ARB files in sync
+        run: dart run tool/check_l10n.dart
+
+      - name: Test with coverage
+        run: flutter test --coverage
+
+      - name: Coverage gate
+        run: dart run tool/check_coverage.dart --min 80
+
+  build-android:
+    name: Build Android (debug)
+    runs-on: ubuntu-latest
+    needs: check
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Create .env
+        run: cp .env.example .env
+
+      - name: Build APK
+        run: flutter build apk --debug

@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flutter Boilerplate",
+  "homeTitle": "Home",
+  "welcomeHeadline": "Welcome",
+  "welcomeBody": "This screen is built with Rows and Columns, SafeScale sizes and localized strings. Replace it with your first feature.",
+  "counterLabel": "{count, plural, =0{No taps yet} one{Tapped once} other{Tapped {count} times}}",
+  "@counterLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "incrementTooltip": "Increment",
+  "reset": "Reset"
+}
