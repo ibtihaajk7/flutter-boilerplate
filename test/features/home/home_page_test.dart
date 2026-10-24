@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_events.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_events.dart'; // slim:analytics
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mocktail/mocktail.dart'; // slim:notifications
 
 import '../../helpers/pump_app.dart';
 
@@ -22,11 +22,13 @@ void main() {
     expect(app.counter.count, 0);
   });
 
+  // slim:analytics:start
   testWidgets('logs the home screen view', (tester) async {
     final app = await tester.pumpApp();
 
     expect(app.analytics.calls, contains('screen:/'));
   });
+  // slim:analytics:end
 
   testWidgets('shows French copy for a French locale', (tester) async {
     await tester.pumpApp(locale: const Locale('fr'));
@@ -35,6 +37,7 @@ void main() {
     expect(find.text('Aucun appui pour l\'instant'), findsOneWidget);
   });
 
+  // slim:notifications:start
   group('test notification', () {
     testWidgets('is shown once permission is granted', (tester) async {
       final app = await tester.pumpApp();
@@ -50,7 +53,12 @@ void main() {
           body: any(named: 'body'),
         ),
       ).called(1);
-      expect(app.analytics.events.single.$1, AnalyticsEvents.buttonTap);
+      // slim:analytics:start
+      expect(
+        app.analytics.events.single.$1,
+        AnalyticsEvents.buttonTap,
+      );
+      // slim:analytics:end
     });
 
     testWidgets('explains how to enable it when permission is denied', (
@@ -75,6 +83,8 @@ void main() {
       );
     });
   });
+
+  // slim:notifications:end
 
   group('no overflow', () {
     final cases = <String, ({Size size, double textScale})>{

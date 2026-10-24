@@ -115,21 +115,34 @@ Strings live in `lib/l10n/app_*.arb`; `app_en.arb` is the template.
 The app talks to interfaces in `lib/core/`, never to vendor SDKs. Vendors
 plug in behind them (`docs/recipes/`).
 
+<!-- slim:analytics:start -->
 - Track through `AnalyticsService` only. Event and parameter names are
   constants in `AnalyticsEvents` / `AnalyticsParams`: `snake_case`, at most 40
   characters (asserted in debug). Track from controllers, not deep inside
   widgets.
 - Give every page route a `RouteSettings(name: …)`: `AnalyticsRouteObserver`
   logs screen views from it.
+<!-- slim:analytics:end -->
+<!-- slim:crash:start -->
 - Uncaught errors already reach `CrashReporter`. Report caught errors you
   swallow with `recordError(error, stack, reason: …)`. Never an empty `catch`.
+<!-- slim:crash:end -->
 - Never send personal data (emails, names, free text) as event parameters or
   user properties.
+<!-- slim:notifications:start -->
 - Ask for notification permission in context, when the user turns on
   something that needs it. Never on launch.
 - Notification text is user-facing: it goes through l10n like everything else.
+<!-- slim:notifications:end -->
 - A new vendor is a new class implementing the interface, plus its unit tests
   against a mocked SDK. Vendor SDK types never leak outside that class.
+- Code that belongs to an optional module carries a slim marker comment: a
+  line ending in `// slim:<module>`, or a block between
+  `// slim:<module>:start` and `// slim:<module>:end` (use the file's comment
+  syntax). Keep markers intact when you edit marked code, and mark new code
+  that only exists for a module, or `tool/slim.dart` will leave it behind and
+  break the build. Wrap anything that may span several lines in a block. CI
+  slims every combination on each push to prove it.
 
 ## Bulk renames
 

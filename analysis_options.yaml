@@ -117,3 +117,7 @@ linter:
     - use_test_throws_matchers
     - valid_regexps
     - void_checks
+
+formatter:
+  # Multi-line lists stay multi-line, so slim markers keep one item per line.
+  trailing_commas: preserve

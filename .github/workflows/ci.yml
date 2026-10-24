@@ -81,3 +81,75 @@ jobs:
 
       - name: Build APK
         run: flutter build apk --debug
+
+  # Proves every combination of `make slim` leaves a green project.
+  slim:
+    name: Slim without ${{ matrix.without }}
+    runs-on: ubuntu-latest
+    needs: check
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        without:
+          - analytics
+          - crash
+          - notifications
+          - analytics,crash
+          - analytics,notifications
+          - crash,notifications
+          - analytics,crash,notifications
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Create .env
+        run: cp .env.example .env
+
+      - name: Slim
+        run: |
+          flutter pub get
+          dart run tool/slim.dart --without ${{ matrix.without }}
+
+      - name: Check
+        run: make check
+
+  # Keeps a ready-to-clone `slim` branch: main with every optional module
+  # removed. Rebuilt from scratch on each push to main.
+  publish-slim:
+    name: Publish slim branch
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [build-android, slim]
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Slim everything
+        run: |
+          cp .env.example .env
+          flutter pub get
+          dart run tool/slim.dart --without analytics,crash,notifications
+          make check
+
+      - name: Push slim branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B slim
+          git add -A
+          git commit -m "Slim: main without analytics, crash reporting and notifications"
+          git push --force origin slim

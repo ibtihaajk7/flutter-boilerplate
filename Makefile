@@ -1,6 +1,6 @@
 # Every target is a thin wrapper, so CI and your machine run the same thing.
 .DEFAULT_GOAL := help
-.PHONY: help setup run check format format-check analyze l10n l10n-check test coverage fix hooks clean rename
+.PHONY: help setup run check format format-check analyze l10n l10n-check test coverage fix hooks clean slim slim-markers rename
 
 help: ## List commands
 	@grep -E '^[a-z0-9-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-14s %s\n", $$1, $$2}'
@@ -44,6 +44,13 @@ fix: ## Apply automated fixes, then format
 hooks: ## Run `make check` before every git push
 	@printf '#!/bin/sh\nmake check\n' > .git/hooks/pre-push && chmod +x .git/hooks/pre-push
 	@echo "pre-push hook installed"
+
+slim: ## Remove optional modules: make slim WITHOUT=analytics,crash,notifications
+	@test -n "$(WITHOUT)" || (echo "Usage: make slim WITHOUT=analytics,crash,notifications" && exit 64)
+	dart run tool/slim.dart --without $(WITHOUT)
+
+slim-markers: ## Keep every module, remove the slim marker comments
+	dart run tool/slim.dart --strip-markers
 
 clean: ## Remove build outputs
 	flutter clean

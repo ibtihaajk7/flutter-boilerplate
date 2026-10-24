@@ -5,7 +5,6 @@
 abstract final class AnalyticsEvents {
   static const String buttonTap = 'button_tap';
   static const String counterIncremented = 'counter_incremented';
-  static const String notificationScheduled = 'notification_scheduled';
 }
 
 abstract final class AnalyticsParams {

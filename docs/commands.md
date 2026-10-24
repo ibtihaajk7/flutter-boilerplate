@@ -45,6 +45,32 @@ values.
 | `make fix` | `dart fix --apply`, then `dart format lib test tool` |
 | `make clean` | `flutter clean` |
 
+## Slim down
+
+Remove optional modules you don't need: `analytics`, `crash`,
+`notifications`, in any combination. Their files, marked code, tests,
+packages, strings, native setup and docs go with them, and `make check` still
+passes.
+
+| `make` | Plain command |
+|---|---|
+| `make slim WITHOUT=notifications` | `dart run tool/slim.dart --without notifications` |
+| `make slim WITHOUT=analytics,crash,notifications` | `dart run tool/slim.dart --without analytics,crash,notifications` |
+| `make slim-markers` | `dart run tool/slim.dart --strip-markers` |
+
+Code that belongs to a module carries a short `slim` comment. Markers of the
+modules you keep stay, so you can slim again later. Once you've settled,
+`make slim-markers` removes them all and keeps the code.
+
+<!-- template:start -->
+Prefer to start lean? Clone the `slim` branch, which CI rebuilds from `main`
+with all three modules removed, then rename it as usual:
+
+```bash
+git clone --branch slim --depth 1 https://github.com/ibtihaajk7/flutter-boilerplate.git my_app
+```
+<!-- template:end -->
+
 ## Before you push
 
 `make check` runs exactly what CI runs. Without `make`, run these in order:

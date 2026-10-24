@@ -25,15 +25,18 @@ live on the [App Store](https://apps.apple.com/app/id6762184175) and
 | Responsive sizing | None | [SafeScale](#safescale) with tuned clamps for small phones, budget phones and tablets |
 | Layouts | Phone only | Phone/tablet layouts, text scale clamped, overflow tests at 320 px and 2× text |
 | Localization | None | ARB setup plus a checker for missing keys, lost placeholders and duplicate copy |
-| Analytics | None | Vendor-neutral service, typed events, automatic screen views |
-| Crash reporting | None | Error handlers wired to a swappable reporter |
-| Notifications | None | Working local notifications, permission asked in context |
+| Analytics | None | Vendor-neutral service, typed events, automatic screen views | <!-- slim:analytics -->
+| Crash reporting | None | Error handlers wired to a swappable reporter | <!-- slim:crash -->
+| Notifications | None | Working local notifications, permission asked in context | <!-- slim:notifications -->
 | Firebase, Mixpanel, FCM | None | [Tested recipes](docs/recipes/README.md), one file each |
 | CI/CD | None | PR checks + Android build; tag to get an AAB and iOS build |
 | Team and AI rules | None | [AGENTS.md](AGENTS.md): layout, testing, analytics and l10n rules |
 | Renaming | By hand, ~10 files | `make rename NAME=my_app ORG=com.acme` |
+| Slimming down | By hand | `make slim WITHOUT=analytics,crash,notifications` |
 
 Nothing is tied to a vendor account: a fresh copy builds and passes CI as is.
+Don't need analytics, crash reporting or notifications? [Slim it down](#slim-down)
+with one command, or start from the ready-made `slim` branch.
 
 ## Start a new app
 
@@ -126,26 +129,45 @@ tool/                scripts used by make and CI
 docs/                commands, recipes/, plans/ and decisions/
 ```
 
-## Analytics, crashes and notifications
+## Optional modules
 
-The app talks to vendor-neutral services in `lib/core/`, which print to the
-console until you plug a vendor in:
+Vendor-neutral services in `lib/core/` that print to the console until you
+plug a vendor in. [Recipes](docs/recipes/README.md) add Firebase, Mixpanel
+and FCM, each one file plus its tests.
 
-```dart
-context.read<AnalyticsService>().track(AnalyticsEvents.buttonTap, {
-  AnalyticsParams.buttonName: 'subscribe',
-});
-```
-
+<!-- slim:analytics:start -->
 - **Analytics**: `AnalyticsService` fans out to every provider, survives a
   failing one, validates event names, and logs screen views for named routes.
-- **Crash reporting**: uncaught Flutter and async errors already reach
-  `CrashReporter`.
-- **Local notifications**: show now or daily at a set time, with permission
-  asked only when the user opts in.
 
-[Recipes](docs/recipes/README.md) add Firebase Analytics, Mixpanel,
-Crashlytics and push notifications (FCM), each one file plus its tests.
+  ```dart
+  context.read<AnalyticsService>().track(AnalyticsEvents.buttonTap, {
+    AnalyticsParams.buttonName: 'subscribe',
+  });
+  ```
+<!-- slim:analytics:end -->
+- **Crash reporting**: uncaught Flutter and async errors already reach `CrashReporter`. <!-- slim:crash -->
+- **Local notifications**: shown now or daily at a set time, with permission asked only when the user opts in. <!-- slim:notifications -->
+
+### Slim down
+
+Remove any module you don't need, with its code, tests, packages, strings,
+native setup and docs. The project stays green:
+
+```bash
+make slim WITHOUT=analytics,crash,notifications
+```
+
+Pick any combination. No `make`? Run
+`dart run tool/slim.dart --without analytics,crash,notifications`.
+
+<!-- template:start -->
+To start lean from the beginning, clone the `slim` branch, which CI rebuilds
+from `main` with all three removed:
+
+```bash
+git clone --branch slim --depth 1 https://github.com/ibtihaajk7/flutter-boilerplate.git my_app
+```
+<!-- template:end -->
 
 ## Rules
 

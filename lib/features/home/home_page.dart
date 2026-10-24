@@ -4,7 +4,7 @@ import 'package:flutter_boilerplate/core/layout/breakpoints.dart';
 import 'package:flutter_boilerplate/core/theme/app_spacing.dart';
 import 'package:flutter_boilerplate/core/widgets/app_scaffold.dart';
 import 'package:flutter_boilerplate/features/home/counter_controller.dart';
-import 'package:flutter_boilerplate/features/home/notification_card.dart';
+import 'package:flutter_boilerplate/features/home/notification_card.dart'; // slim:notifications
 import 'package:provider/provider.dart';
 
 /// Example screen built the AGENTS.md way: Columns and Rows (no Stack),
@@ -39,7 +39,10 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           spacing: AppSpacing.md,
-                          children: const [_CounterCard(), NotificationCard()],
+                          children: const [
+                            _CounterCard(),
+                            NotificationCard(), // slim:notifications
+                          ],
                         ),
                       ),
                     ],
@@ -50,7 +53,7 @@ class HomePage extends StatelessWidget {
                     children: const [
                       _IntroCard(),
                       _CounterCard(),
-                      NotificationCard(),
+                      NotificationCard(), // slim:notifications
                     ],
                   ),
           );

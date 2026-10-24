@@ -19,7 +19,6 @@ void main() {
     const names = [
       AnalyticsEvents.buttonTap,
       AnalyticsEvents.counterIncremented,
-      AnalyticsEvents.notificationScheduled,
       AnalyticsParams.buttonName,
       AnalyticsParams.count,
     ];

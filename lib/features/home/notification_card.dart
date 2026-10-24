@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_events.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_service.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_events.dart'; // slim:analytics
+import 'package:flutter_boilerplate/core/analytics/analytics_service.dart'; // slim:analytics
 import 'package:flutter_boilerplate/core/l10n/l10n.dart';
 import 'package:flutter_boilerplate/core/notifications/local_notification_service.dart';
 import 'package:flutter_boilerplate/core/theme/app_spacing.dart';
@@ -17,9 +17,11 @@ class NotificationCard extends StatelessWidget {
     final l10n = context.l10n;
     final notifications = context.read<LocalNotificationService>();
     final messenger = ScaffoldMessenger.of(context);
+    // slim:analytics:start
     context.read<AnalyticsService>().track(AnalyticsEvents.buttonTap, {
       AnalyticsParams.buttonName: 'send_test_notification',
     }).ignore();
+    // slim:analytics:end
 
     if (!await notifications.requestPermission()) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.notificationsDenied)));

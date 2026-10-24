@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_route_observer.dart';
-import 'package:flutter_boilerplate/core/analytics/analytics_service.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_route_observer.dart'; // slim:analytics
+import 'package:flutter_boilerplate/core/analytics/analytics_service.dart'; // slim:analytics
 import 'package:flutter_boilerplate/core/l10n/l10n.dart';
 import 'package:flutter_boilerplate/core/scale/app_scale.dart';
 import 'package:flutter_boilerplate/core/theme/app_theme.dart';
@@ -26,9 +26,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  // slim:analytics:start
   late final AnalyticsRouteObserver _routeObserver = AnalyticsRouteObserver(
     context.read<AnalyticsService>(),
   );
+  // slim:analytics:end
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,9 @@ class _AppState extends State<App> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => context.l10n.appTitle,
-      navigatorObservers: [_routeObserver],
+      navigatorObservers: [
+        _routeObserver, // slim:analytics
+      ],
       locale: widget.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

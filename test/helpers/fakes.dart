@@ -1,7 +1,8 @@
-import 'package:flutter_boilerplate/core/analytics/analytics_provider.dart';
-import 'package:flutter_boilerplate/core/notifications/local_notification_service.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_provider.dart'; // slim:analytics
+import 'package:flutter_boilerplate/core/notifications/local_notification_service.dart'; // slim:notifications
+import 'package:mocktail/mocktail.dart'; // slim:notifications
 
+// slim:analytics:start
 /// Records every analytics call so tests can assert on them.
 class FakeAnalyticsProvider implements AnalyticsProvider {
   final List<String> calls = [];
@@ -30,6 +31,10 @@ class FakeAnalyticsProvider implements AnalyticsProvider {
   @override
   Future<void> setEnabled(bool enabled) async => calls.add('enabled:$enabled');
 }
+// slim:analytics:end
 
+// slim:notifications:start
 class MockLocalNotificationService extends Mock
     implements LocalNotificationService {}
+
+// slim:notifications:end
