@@ -91,6 +91,7 @@ void main() {
 
       expect(read('README.md'), '# My App\n\nKeep me.\n');
       expect(File('${root.path}/tool/rename.dart').existsSync(), isFalse);
+      expect(Directory('${root.path}/docs/images').existsSync(), isFalse);
     });
 
     test('refuses to run twice', () {
@@ -141,4 +142,5 @@ void _writeTemplate(Directory root) {
         'Keep me.\n',
   );
   write('tool/rename.dart', '// self-deleting\n');
+  write('docs/images/hero.png', 'not really a png');
 }

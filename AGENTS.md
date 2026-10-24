@@ -110,6 +110,27 @@ Strings live in `lib/l10n/app_*.arb`; `app_en.arb` is the template.
 7. Resolve device locales through `resolveLocale`; generated lookups throw on
    unsupported languages.
 
+## Analytics, crash reporting and notifications
+
+The app talks to interfaces in `lib/core/`, never to vendor SDKs. Vendors
+plug in behind them (`docs/recipes/`).
+
+- Track through `AnalyticsService` only. Event and parameter names are
+  constants in `AnalyticsEvents` / `AnalyticsParams`: `snake_case`, at most 40
+  characters (asserted in debug). Track from controllers, not deep inside
+  widgets.
+- Give every page route a `RouteSettings(name: …)`: `AnalyticsRouteObserver`
+  logs screen views from it.
+- Uncaught errors already reach `CrashReporter`. Report caught errors you
+  swallow with `recordError(error, stack, reason: …)`. Never an empty `catch`.
+- Never send personal data (emails, names, free text) as event parameters or
+  user properties.
+- Ask for notification permission in context, when the user turns on
+  something that needs it. Never on launch.
+- Notification text is user-facing: it goes through l10n like everything else.
+- A new vendor is a new class implementing the interface, plus its unit tests
+  against a mocked SDK. Vendor SDK types never leak outside that class.
+
 ## Bulk renames
 
 Don't blind-replace short identifiers across the codebase. Common names
@@ -123,7 +144,8 @@ unrelated code.
 lib/
   main.dart          bootstrap only; reach the first frame fast
   app.dart           MaterialApp, SafeScale init, theme, l10n, text scale clamp
-  core/              shared, feature-agnostic code (env, l10n, layout, scale, theme, widgets)
+  core/              shared, feature-agnostic code (analytics, crash, env, l10n,
+                     layout, notifications, scale, theme, widgets)
   features/<name>/   one folder per feature: pages, widgets, controllers
   l10n/              ARB files + generated localizations
 test/                mirrors lib/; helpers/ holds shared test utilities

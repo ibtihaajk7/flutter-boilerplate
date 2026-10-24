@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_route_observer.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_service.dart';
 import 'package:flutter_boilerplate/core/l10n/l10n.dart';
 import 'package:flutter_boilerplate/core/scale/app_scale.dart';
 import 'package:flutter_boilerplate/core/theme/app_theme.dart';
 import 'package:flutter_boilerplate/features/home/home_page.dart';
 import 'package:flutter_boilerplate/l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 /// Largest system text scale the layouts are designed to absorb.
 ///
@@ -11,12 +14,21 @@ import 'package:flutter_boilerplate/l10n/app_localizations.dart';
 /// fixed layouts off screen on small phones.
 const double maxTextScaleFactor = 1.3;
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key, this.locale});
 
   /// Forces a locale (tests, or a user-picked language). `null` follows the
   /// device.
   final Locale? locale;
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  late final AnalyticsRouteObserver _routeObserver = AnalyticsRouteObserver(
+    context.read<AnalyticsService>(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +39,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => context.l10n.appTitle,
-      locale: locale,
+      navigatorObservers: [_routeObserver],
+      locale: widget.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       localeResolutionCallback: resolveLocale,

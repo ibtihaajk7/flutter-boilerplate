@@ -23,8 +23,9 @@ void main() {
       expect(computeSafeScale(width: 370, devicePixelRatio: 2), 370 / 390);
     });
 
-    test('low-density cap wins over the tablet range', () {
-      expect(computeSafeScale(width: 768, devicePixelRatio: 2), 1.0);
+    test('@2x tablets (iPads) get the tablet range, not the phone cap', () {
+      expect(computeSafeScale(width: 820, devicePixelRatio: 2), 1.2);
+      expect(computeSafeScale(width: 744, devicePixelRatio: 2), 1.2);
     });
 
     test('sharp tablet grows up to 1.2', () {

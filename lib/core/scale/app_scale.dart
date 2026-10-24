@@ -26,11 +26,13 @@ double computeSafeScale({
   final isTablet = width > 600;
 
   final scale = width / DesignFrame.width;
-  if (isLowDensityLargeScreen) {
-    return scale.clamp(0.85, 1.0);
-  }
+  // Tablets first: iPads and most Android tablets are @2x, so the
+  // low-density check below would otherwise catch them too.
   if (isTablet) {
     return scale.clamp(1.0, 1.2);
+  }
+  if (isLowDensityLargeScreen) {
+    return scale.clamp(0.85, 1.0);
   }
   return scale.clamp(0.9, 1.1);
 }

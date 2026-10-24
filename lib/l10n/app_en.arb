@@ -13,5 +13,13 @@
     }
   },
   "incrementTooltip": "Increment",
-  "reset": "Reset"
+  "reset": "Reset",
+  "notificationsTitle": "Notifications",
+  "notificationsBody": "Local notifications work out of the box, no server needed. Permission is asked only when you tap.",
+  "sendTestNotification": "Send a test notification",
+  "testNotificationTitle": "It works!",
+  "testNotificationBody": "This notification came from your new app.",
+  "notificationsDenied": "Notifications are off. You can turn them on in Settings.",
+  "notificationChannelName": "General",
+  "notificationChannelDescription": "General notifications from the app."
 }

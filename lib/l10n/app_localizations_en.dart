@@ -38,4 +38,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reset => 'Reset';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsBody =>
+      'Local notifications work out of the box, no server needed. Permission is asked only when you tap.';
+
+  @override
+  String get sendTestNotification => 'Send a test notification';
+
+  @override
+  String get testNotificationTitle => 'It works!';
+
+  @override
+  String get testNotificationBody =>
+      'This notification came from your new app.';
+
+  @override
+  String get notificationsDenied =>
+      'Notifications are off. You can turn them on in Settings.';
+
+  @override
+  String get notificationChannelName => 'General';
+
+  @override
+  String get notificationChannelDescription =>
+      'General notifications from the app.';
 }

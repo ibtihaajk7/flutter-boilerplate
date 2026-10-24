@@ -5,16 +5,35 @@
 [![safe_scale](https://img.shields.io/pub/v/safe_scale?label=safe_scale)](https://pub.dev/packages/safe_scale)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A production-grade starting point for Flutter apps: the same setup, rules and
-quality gates used to ship a real app to the App Store and Google Play.
+**A production-grade starting point for Flutter apps.** The same setup, rules
+and quality gates behind [Chess Coach Pro](https://apps.apple.com/app/id6762184175),
+live on the [App Store](https://apps.apple.com/app/id6762184175) and
+[Google Play](https://play.google.com/store/apps/details?id=com.dynastytechs.chesscoach).
 
-- **Strict analysis**: strict casts, inference and raw types, plus ~95 lint rules; infos fail the build
-- **Tests that count**: unit and widget tests from day one, an 80% coverage gate, and no untested file under `lib/`
-- **Responsive by default** with [SafeScale](#safescale), clamped system text scale, and phone/tablet layouts
-- **Localization** with an ARB checker that catches missing keys, lost placeholders and duplicate copy
-- **CI/CD**: GitHub Actions for checks and a debug build on every PR, plus signed releases from a tag
-- **AGENTS.md**: layout, testing and l10n rules that both people and AI coding tools follow
-- **One-command rename** to your app name, package and bundle IDs
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-2ea44f?style=for-the-badge&logo=github)](https://github.com/ibtihaajk7/flutter-boilerplate/generate)
+
+⭐ **If it saves you a day of setup, star the repo.** It helps other people find it.
+
+![The example screen on iPad and iPhone: same code, two layouts, with a local notification arriving](docs/images/hero.png)
+
+## Why not just `flutter create`?
+
+| | `flutter create` | flutter-boilerplate |
+|---|:---:|:---:|
+| Analysis | `flutter_lints` defaults | Strict casts, inference and raw types, ~95 rules, infos fail CI |
+| Tests | One counter test | 70+ unit and widget tests, coverage gate, every `lib/` file tested |
+| Responsive sizing | None | [SafeScale](#safescale) with tuned clamps for small phones, budget phones and tablets |
+| Layouts | Phone only | Phone/tablet layouts, text scale clamped, overflow tests at 320 px and 2× text |
+| Localization | None | ARB setup plus a checker for missing keys, lost placeholders and duplicate copy |
+| Analytics | None | Vendor-neutral service, typed events, automatic screen views |
+| Crash reporting | None | Error handlers wired to a swappable reporter |
+| Notifications | None | Working local notifications, permission asked in context |
+| Firebase, Mixpanel, FCM | None | [Tested recipes](docs/recipes/README.md), one file each |
+| CI/CD | None | PR checks + Android build; tag to get an AAB and iOS build |
+| Team and AI rules | None | [AGENTS.md](AGENTS.md): layout, testing, analytics and l10n rules |
+| Renaming | By hand, ~10 files | `make rename NAME=my_app ORG=com.acme` |
+
+Nothing is tied to a vendor account: a fresh copy builds and passes CI as is.
 
 ## Start a new app
 
@@ -98,13 +117,35 @@ All commands and what each check enforces: [docs/commands.md](docs/commands.md).
 lib/
   main.dart          bootstrap only
   app.dart           MaterialApp, SafeScale, theme, l10n, text scale clamp
-  core/              env, l10n, layout, scale, theme, shared widgets
+  core/              analytics, crash, env, l10n, layout, notifications,
+                     scale, theme, shared widgets
   features/<name>/   one folder per feature
   l10n/              ARB files (+ generated code)
 test/                mirrors lib/
 tool/                scripts used by make and CI
-docs/                plans/ and decisions/
+docs/                commands, recipes/, plans/ and decisions/
 ```
+
+## Analytics, crashes and notifications
+
+The app talks to vendor-neutral services in `lib/core/`, which print to the
+console until you plug a vendor in:
+
+```dart
+context.read<AnalyticsService>().track(AnalyticsEvents.buttonTap, {
+  AnalyticsParams.buttonName: 'subscribe',
+});
+```
+
+- **Analytics**: `AnalyticsService` fans out to every provider, survives a
+  failing one, validates event names, and logs screen views for named routes.
+- **Crash reporting**: uncaught Flutter and async errors already reach
+  `CrashReporter`.
+- **Local notifications**: show now or daily at a set time, with permission
+  asked only when the user opts in.
+
+[Recipes](docs/recipes/README.md) add Firebase Analytics, Mixpanel,
+Crashlytics and push notifications (FCM), each one file plus its tests.
 
 ## Rules
 

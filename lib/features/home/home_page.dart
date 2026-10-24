@@ -4,6 +4,7 @@ import 'package:flutter_boilerplate/core/layout/breakpoints.dart';
 import 'package:flutter_boilerplate/core/theme/app_spacing.dart';
 import 'package:flutter_boilerplate/core/widgets/app_scaffold.dart';
 import 'package:flutter_boilerplate/features/home/counter_controller.dart';
+import 'package:flutter_boilerplate/features/home/notification_card.dart';
 import 'package:provider/provider.dart';
 
 /// Example screen built the AGENTS.md way: Columns and Rows (no Stack),
@@ -32,15 +33,25 @@ class HomePage extends StatelessWidget {
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: AppSpacing.lg,
-                    children: const [
-                      Expanded(child: _IntroCard()),
-                      Expanded(child: _CounterCard()),
+                    children: [
+                      const Expanded(child: _IntroCard()),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: AppSpacing.md,
+                          children: const [_CounterCard(), NotificationCard()],
+                        ),
+                      ),
                     ],
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     spacing: AppSpacing.md,
-                    children: const [_IntroCard(), _CounterCard()],
+                    children: const [
+                      _IntroCard(),
+                      _CounterCard(),
+                      NotificationCard(),
+                    ],
                   ),
           );
         },

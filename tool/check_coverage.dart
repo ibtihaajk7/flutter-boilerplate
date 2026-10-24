@@ -6,8 +6,9 @@ import 'dart:io';
 
 import 'src/coverage.dart';
 
-/// Not worth unit testing: app bootstrap and generated localizations.
-const _excluded = ['lib/main.dart', 'lib/l10n/'];
+/// Not worth unit testing: app bootstrap and generated code (localizations,
+/// and `firebase_options.dart` from `flutterfire configure`).
+const _excluded = ['lib/main.dart', 'lib/l10n/', 'lib/firebase_options.dart'];
 const _defaultMin = 80.0;
 const _ignoreFileMarker = '// coverage:ignore-file';
 

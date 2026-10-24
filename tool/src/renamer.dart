@@ -13,6 +13,10 @@ const templateOnlyPaths = [
   'test/tool/renamer_test.dart',
 ];
 
+/// Folders that only make sense inside the template (README images);
+/// deleted after a rename.
+const templateOnlyDirectories = ['docs/images'];
+
 const _skippedDirectories = {
   '.git',
   '.dart_tool',
@@ -143,6 +147,10 @@ class Renamer {
     for (final path in templateOnlyPaths) {
       final file = File(_path(path));
       if (file.existsSync()) file.deleteSync();
+    }
+    for (final path in templateOnlyDirectories) {
+      final directory = Directory(_path(path));
+      if (directory.existsSync()) directory.deleteSync(recursive: true);
     }
     return changed..sort();
   }

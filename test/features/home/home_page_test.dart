@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/core/analytics/analytics_events.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -7,7 +9,7 @@ void main() {
   testWidgets('tapping + updates the counter and enables reset', (
     tester,
   ) async {
-    final counter = await tester.pumpApp();
+    final app = await tester.pumpApp();
 
     expect(find.text('No taps yet'), findsOneWidget);
 
@@ -17,7 +19,13 @@ void main() {
 
     await tester.tap(find.text('Reset'));
     await tester.pump();
-    expect(counter.count, 0);
+    expect(app.counter.count, 0);
+  });
+
+  testWidgets('logs the home screen view', (tester) async {
+    final app = await tester.pumpApp();
+
+    expect(app.analytics.calls, contains('screen:/'));
   });
 
   testWidgets('shows French copy for a French locale', (tester) async {
@@ -25,6 +33,47 @@ void main() {
 
     expect(find.text('Accueil'), findsOneWidget);
     expect(find.text('Aucun appui pour l\'instant'), findsOneWidget);
+  });
+
+  group('test notification', () {
+    testWidgets('is shown once permission is granted', (tester) async {
+      final app = await tester.pumpApp();
+
+      await tester.ensureVisible(find.text('Send a test notification'));
+      await tester.tap(find.text('Send a test notification'));
+      await tester.pump();
+
+      verify(
+        () => app.notifications.show(
+          id: any(named: 'id'),
+          title: 'It works!',
+          body: any(named: 'body'),
+        ),
+      ).called(1);
+      expect(app.analytics.events.single.$1, AnalyticsEvents.buttonTap);
+    });
+
+    testWidgets('explains how to enable it when permission is denied', (
+      tester,
+    ) async {
+      final app = await tester.pumpApp(notificationPermission: false);
+
+      await tester.ensureVisible(find.text('Send a test notification'));
+      await tester.tap(find.text('Send a test notification'));
+      await tester.pump();
+
+      expect(
+        find.text('Notifications are off. You can turn them on in Settings.'),
+        findsOneWidget,
+      );
+      verifyNever(
+        () => app.notifications.show(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+        ),
+      );
+    });
   });
 
   group('no overflow', () {
