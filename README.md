@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **A production-grade starting point for Flutter apps.** The same setup, rules
-and quality gates behind [Chess Coach Pro](https://apps.apple.com/app/id6762184175),
+and quality gates behind [Chess Coach Pro](https://chesscoachpro.com/),
 live on the [App Store](https://apps.apple.com/app/id6762184175) and
 [Google Play](https://play.google.com/store/apps/details?id=com.dynastytechs.chesscoach).
 
