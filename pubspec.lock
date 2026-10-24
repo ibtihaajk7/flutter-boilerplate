@@ -297,10 +297,10 @@ packages:
     dependency: "direct main"
     description:
       name: safe_scale
-      sha256: "22dd50b74d8c0a15ddf9247f1d86a4b568acb3dd7a7653c7ce92e12e5f0a6243"
+      sha256: "5e857792b93c416dc30792bf9d931d54d022eef4b9088569f9fe77d7ccfe8681"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
